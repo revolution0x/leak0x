@@ -1,0 +1,33 @@
+{
+  "name": "leak0x",
+  "version": "0.0.1",
+  "description": "Decentralised Whistleblowing",
+  "main": "index.js",
+  "scripts": {
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/revolution0x/leak0x"
+  },
+  "keywords": [
+    "ethereum",
+    "leak0x",
+    "whistleblowing",
+    "decentralised"
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/revolution0x/leak0x/issues"
+  },
+  "homepage": "https://github.com/revolution0x/leak0x#readme",
+  "dependencies": {
+    "dotenv": "^6.2.0",
+    "openzeppelin-eth": "^2.1.3",
+    "truffle-hdwallet-provider": "^1.0.3",
+    "zos-lib": "2.2.0"
+  },
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "openzeppelin-test-helpers": "^0.3.0"
+  }
+}
