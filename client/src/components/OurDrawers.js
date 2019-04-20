@@ -2,14 +2,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
-import Button from '@material-ui/core/Button';
 import List from '@material-ui/core/List';
-import Divider from '@material-ui/core/Divider';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import InboxIcon from '@material-ui/icons/MoveToInbox';
-import MailIcon from '@material-ui/icons/Mail';
+import HomeIcon from '@material-ui/icons/Home';
+import CreateIcon from '@material-ui/icons/LeakAdd';
+import DiscoverIcon from '@material-ui/icons/Visibility';
 import store from '../state';
 import {connect} from 'react-redux';
 import {showLeftMenu} from '../state/actions';
@@ -58,19 +57,19 @@ class OurDrawers extends React.Component {
         <List>
             <Link to={'/'} className={"no-decorate"}>
                 <ListItem button key={"Home"}>
-                <ListItemIcon><MailIcon /></ListItemIcon>
+                <ListItemIcon><HomeIcon /></ListItemIcon>
                 <ListItemText primary={"Home"} />
                 </ListItem>
             </Link>
             <Link to={'/create'} className={"no-decorate"}>
                 <ListItem button key={"Create"}>
-                <ListItemIcon><MailIcon /></ListItemIcon>
+                <ListItemIcon><CreateIcon /></ListItemIcon>
                 <ListItemText primary={"Create"} />
                 </ListItem>
             </Link>
             <Link to={'/discover'} className={"no-decorate"}>
                 <ListItem button key={"Discover"}>
-                <ListItemIcon><MailIcon /></ListItemIcon>
+                <ListItemIcon><DiscoverIcon /></ListItemIcon>
                 <ListItemText primary={"Discover"} />
                 </ListItem>
             </Link>

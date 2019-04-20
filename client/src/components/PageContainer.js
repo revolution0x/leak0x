@@ -9,7 +9,9 @@ import HomePage from "./pages/HomePage";
 import { connect } from "react-redux";
 
 const styles = theme => ({
-
+    pageContainer: {
+        padding: theme.spacing.unit * 4
+    }
 })
 
 class PageContainer extends Component {
@@ -23,14 +25,15 @@ class PageContainer extends Component {
     // });
 
     render() {
+        const {classes} = this.props;
         return (
-            <React.Fragment>
+            <div className={classes.pageContainer}>
                 <Route path="/" exact render={(props) => homeRoute(props)} />
                 <Route path="/create" exact render={(props) => createRoute(props)} />
                 <Route path="/discover" exact render={(props) => discoverRoute(props)} />
                 <Route path="/settings" exact render={(props) => settingsRoute(props)} />
                 {/* Profile default: <Route path="/:username" render={(props) => profileRoute} /> */}
-            </React.Fragment>
+            </div>
         )
     }
     
