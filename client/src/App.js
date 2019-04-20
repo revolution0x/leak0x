@@ -2,9 +2,23 @@ import React, { Component } from "react";
 import getWeb3, { getGanacheWeb3 } from "./utils/getWeb3";
 import Web3Info from "./components/Web3Info/index.js";
 import { Loader } from 'rimble-ui';
+import PageContainer from "./components/PageContainer";
+import { Router, Link } from 'react-router-dom';
+import {configureHistory} from "./utils";
+import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
+import OurAppBar from "./components/OurAppBar";
+import OurDrawers from "./components/OurDrawers";
+import { Provider } from "react-redux";
+import store from "./state";
+import "./App.css";
 
-import styles from './App.module.scss';
+const history = configureHistory();
 
+const theme = createMuiTheme({
+  typography: {
+    useNextVariants: true,
+  }
+});
 class App extends Component {
   state = {
     storageValue: 0,
@@ -57,7 +71,7 @@ class App extends Component {
 
   renderLoader() {
     return (
-      <div className={styles.loader}>
+      <div className={"loader"}>
         <Loader size="80px" color="red" />
         <h3> Loading Web3, accounts, and contract...</h3>
         <p> Unlock your metamask </p>
@@ -70,9 +84,18 @@ class App extends Component {
       return this.renderLoader();
     }
     return (
-      <div className={styles.App}>
-        <Web3Info {...this.state} />
-      </div>
+      <Router history={history}>
+        <Provider store={store}>
+          <MuiThemeProvider theme={theme}>
+            <div className={"app"}>
+              <OurDrawers/>
+              <OurAppBar/>
+              <PageContainer />
+              {/* <Web3Info {...this.state} /> */}
+            </div>
+          </MuiThemeProvider>
+        </Provider>
+      </Router>
     );
   }
 }
