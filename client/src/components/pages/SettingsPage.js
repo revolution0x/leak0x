@@ -1,24 +1,31 @@
 import React, { Component } from "react";
 import {withStyles} from "@material-ui/core/styles";
-import {Route, withRouter} from "react-router-dom";
+import Card from '@material-ui/core/Card';
 
 const styles = theme => ({
-
+    cardPadding: {
+        padding: theme.spacing.unit * 2,
+    }
 })
 
-class SettingsPage extends Component {
+class LeakPage extends Component {
     constructor(props) {
         super(props);
         this.state = {};
     }
 
     render() {
+        const {classes} = this.props;
         return (
             <React.Fragment>
-                <h1>Settings Page</h1>
+                <div className="text-align-center">
+                    <Card className={"max-page-width auto-margins " + classes.cardPadding}>
+                        <h1>Settings</h1>
+                    </Card>
+                </div>
             </React.Fragment>
         )
     }
 }
 
-export default withRouter(withStyles(styles, { withTheme: true })(SettingsPage));
+export default withStyles(styles, { withTheme: true })(LeakPage);

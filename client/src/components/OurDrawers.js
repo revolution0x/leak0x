@@ -8,7 +8,8 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import HomeIcon from '@material-ui/icons/Home';
 import CreateIcon from '@material-ui/icons/LeakAdd';
-import DiscoverIcon from '@material-ui/icons/Visibility';
+import ViewLeakIcon from '@material-ui/icons/Visibility';
+import DiscoverIcon from '@material-ui/icons/Explore';
 import store from '../state';
 import {connect} from 'react-redux';
 import {showLeftMenu} from '../state/actions';
@@ -65,6 +66,12 @@ class OurDrawers extends React.Component {
                 <ListItem button key={"Create"}>
                 <ListItemIcon><CreateIcon /></ListItemIcon>
                 <ListItemText primary={"Create"} />
+                </ListItem>
+            </Link>
+            <Link to={'/leak'} className={"no-decorate"}>
+                <ListItem button key={"View Leak"}>
+                <ListItemIcon><ViewLeakIcon /></ListItemIcon>
+                <ListItemText primary={"View Leak"} />
                 </ListItem>
             </Link>
             <Link to={'/discover'} className={"no-decorate"}>

@@ -14,9 +14,10 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 import {connect} from 'react-redux';
 import store from '../state';
-import {showLeftMenu} from '../state/actions';
+import {showLeftMenu, setActiveAccount} from '../state/actions';
 import leak0xLogo from "../images/leak0x.png";
 import {Link} from "react-router-dom";
+import { PublicAddress, Blockie } from 'rimble-ui';
 
 console.log('store',store.getState());
 
@@ -38,19 +39,22 @@ class OurAppBar extends React.Component {
     super(props);
     store.subscribe(() => {
       this.setState({
-        showLeftMenu: store.getState().showLeftMenu
+        showLeftMenu: store.getState().showLeftMenu,
+        activeAccount: store.getState().setActiveAccount
       });
     });
   }
 
   state = {
-    auth: true,
     anchorEl: null,
   };
 
-  handleChange = event => {
-    this.setState({ auth: event.target.checked });
-  };
+  componentDidMount() {
+    const {accounts} = this.props;
+    if((accounts && accounts[0]) && this.state.activeAccount !== accounts[0]){
+      this.props.dispatch(setActiveAccount(accounts[0]));
+    }
+  }
 
   handleMenu = event => {
     this.setState({ anchorEl: event.currentTarget });
@@ -65,8 +69,8 @@ class OurAppBar extends React.Component {
   }
 
   render() {
-    const { classes } = this.props;
-    const { auth, anchorEl } = this.state;
+    const { classes, accounts, dispatch } = this.props;
+    const { activeAccount, anchorEl } = this.state;
     const open = Boolean(anchorEl);
 
     return (
@@ -83,7 +87,7 @@ class OurAppBar extends React.Component {
             <Link to="/" className={"logo-container" + " " + classes.grow}>
               <img src={leak0xLogo} alt="leak0x Logo"/>
             </Link>
-            {auth && (
+            {activeAccount && (
               <div>
                 <IconButton
                   aria-owns={open ? 'menu-appbar' : undefined}

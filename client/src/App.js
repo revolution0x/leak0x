@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import getWeb3, { getGanacheWeb3 } from "./utils/getWeb3";
-import Web3Info from "./components/Web3Info/index.js";
 import { Loader } from 'rimble-ui';
 import PageContainer from "./components/PageContainer";
 import { Router, Link } from 'react-router-dom';
@@ -89,7 +88,7 @@ class App extends Component {
           <MuiThemeProvider theme={theme}>
             <div className={"app"}>
               <OurDrawers/>
-              <OurAppBar/>
+              <OurAppBar {...this.state}/>
               <PageContainer />
               {/* <Web3Info {...this.state} /> */}
             </div>
