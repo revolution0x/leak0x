@@ -47,7 +47,14 @@ class CreateLeakForm extends Component {
             "application/pdf",
             "video/webm",
             "video/mp4",
-            "video/ogg"
+            "video/ogg",
+            "application/zip",
+            "application/x-rar-compressed",
+            "application/octet-stream",
+            "multipart/x-zip",
+            "application/x-zip-compressed",
+            "audio/mpeg",
+            "audio/mp3"
         ];
         const validationSchema = yup.object().shape({
         recaptcha: yup.array(),
@@ -88,7 +95,7 @@ class CreateLeakForm extends Component {
                             let data = Buffer.from(reader.result);
                             uploadToIPFS(data).then(async (res) => {
                                 await createLeak(store.getState().setActiveAccount, res[0].hash, title, mimeType);
-                                thisPersist.setRedirect(`leak/${res[0].hash}`);
+                                thisPersist.setRedirect(`/leak/${res[0].hash}`);
                                 setSubmitting(false);
                             });
                         };

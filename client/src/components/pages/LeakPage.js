@@ -1,7 +1,9 @@
 import React, { Component } from "react";
 import {withStyles} from "@material-ui/core/styles";
 import Card from '@material-ui/core/Card';
+import TextField from '@material-ui/core/TextField';
 import {getLeakFromIpfsHash} from '../../services/leak0x';
+import {withRouter} from "react-router-dom";
 import {downloadFromIPFS} from '../../utils/ipfs';
 
 const styles = theme => ({
@@ -17,7 +19,9 @@ class LeakPage extends Component {
     }
 
     componentDidMount() {
-        this.getLeakFromLeakHash(this.props.leakHash);
+        if (this.props.leakHash) {
+            this.getLeakFromLeakHash(this.props.leakHash);
+        }
     }
 
     getLeakFromLeakHash = async (leakHash) => {
@@ -37,18 +41,30 @@ class LeakPage extends Component {
         }
     }
 
+    setLeak = event => {
+        this.props.history.push("/leak/" + event.target.value);
+    }
+
     render() {
-        const {classes} = this.props;
+        const {classes, leakHash} = this.props;
         const {leak} = this.state;
-        console.log('leak', leak);
         return (
             <React.Fragment>
                 <div className="text-align-center">
                     <Card className={"max-page-width auto-margins " + classes.cardPadding}>
                         <h1>Leak</h1>
-                        {leak && <a href={"javascript:;"} rel="noopener noreferrer" onClick={() => downloadFromIPFS(leak.hash, leak.mimeType, leak.title)}>
+                        {leakHash && leak && <a href={"javascript:;"} rel="noopener noreferrer" onClick={() => downloadFromIPFS(leak.hash, leak.mimeType, leak.title)}>
                             {leak.title}
                         </a>}
+                        {(!leak || !leakHash) &&
+                        <TextField
+                        id="leak-search-hash"
+                        label="Leak Hash"
+                        className={classes.textField + " fullwidth"}
+                        onChange={(event) => this.setLeak(event)}
+                        margin="none"
+                      />
+                        }
                     </Card>
                 </div>
             </React.Fragment>
@@ -56,4 +72,4 @@ class LeakPage extends Component {
     }
 }
 
-export default withStyles(styles, { withTheme: true })(LeakPage);
+export default withRouter(withStyles(styles, { withTheme: true })(LeakPage));

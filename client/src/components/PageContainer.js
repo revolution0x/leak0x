@@ -29,8 +29,7 @@ class PageContainer extends Component {
         const {classes} = this.props;
         return (
             <div className={classes.pageContainer}>
-                <Route path="/" exact render={(props) => homeRoute(props)} />
-                <Route path="/create" exact render={(props) => createRoute(props)} />
+                <Route path="/" exact render={(props) => createRoute(props)} />
                 <Route path="/leak" exact render={(props) => leakRoute(props)} />
                 <Route path="/leak/:leakHash" exact render={(props) => leakRoute(props)} />
                 <Route path="/discover" exact render={(props) => discoverRoute(props)} />

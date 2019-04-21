@@ -31,6 +31,10 @@ const styles = {
   menuButton: {
     marginLeft: -12,
     marginRight: 5,
+  },
+  accountAddressStyle: {
+    color: "white",
+    display: "inline-block"
   }
 };
 
@@ -89,13 +93,17 @@ class OurAppBar extends React.Component {
             </Link>
             {activeAccount && (
               <div>
+                <Typography className={classes.accountAddressStyle}>
+                  {activeAccount}
+                </Typography>
                 <IconButton
                   aria-owns={open ? 'menu-appbar' : undefined}
                   aria-haspopup="true"
                   onClick={this.handleMenu}
                   color="inherit"
                 >
-                  <AccountCircle />
+                
+                  <Blockie opts={{seed: activeAccount, size: 15, scale: 3}}></Blockie>
                 </IconButton>
                 <Menu
                   id="menu-appbar"
@@ -111,8 +119,9 @@ class OurAppBar extends React.Component {
                   open={open}
                   onClose={this.handleClose}
                 >
-                  <MenuItem onClick={this.handleClose}>Profile</MenuItem>
-                  <MenuItem onClick={this.handleClose}>My account</MenuItem>
+                  <MenuItem onClick={this.handleClose}>
+                    <Link className={"no-decorate"} to={"/whistleblower/" + activeAccount}>Profile</Link>
+                  </MenuItem>
                 </Menu>
               </div>
             )}

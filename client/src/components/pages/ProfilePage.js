@@ -7,6 +7,12 @@ import {getFromIPFS, downloadFromIPFS} from "../../utils/ipfs";
 const styles = theme => ({
     cardPadding: {
         padding: theme.spacing.unit * 2,
+    },
+    cardMargin: {
+        marginTop: theme.spacing.unit * 2,
+    },
+    headingMargin: {
+        marginBottom: "0px"
     }
 })
 
@@ -51,13 +57,14 @@ class ProfilePage extends Component {
             <React.Fragment>
                 <div className="text-align-center">
                     <Card className={"max-page-width auto-margins " + classes.cardPadding}>
-                        <h1>Profile: {address}</h1>
+                        <h1 className={classes.headingMargin}>{address}</h1>
                     </Card>
                     {leaks.map((leak, index) => {
-                        return <Card className={"max-page-width auto-margins " + classes.cardPadding} key={leak.hash}>
+                        return <Card className={"max-page-width auto-margins " + classes.cardPadding + " " + classes.cardMargin} key={leak.hash}>
                             <a href={"javascript:;"} rel="noopener noreferrer" onClick={() => downloadFromIPFS(leak.hash, leak.mimeType, leak.title)}>
                                 {leak.title}
                             </a>
+                            <p>{leak.hash}</p>
                         </Card>
                     })}
                 </div>

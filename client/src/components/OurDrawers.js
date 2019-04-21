@@ -56,13 +56,13 @@ class OurDrawers extends React.Component {
     const sideList = (
       <div className={classes.list}>
         <List>
-            <Link to={'/'} className={"no-decorate"}>
+            {/* <Link to={'/'} className={"no-decorate"}>
                 <ListItem button key={"Home"}>
                 <ListItemIcon><HomeIcon /></ListItemIcon>
                 <ListItemText primary={"Home"} />
                 </ListItem>
-            </Link>
-            <Link to={'/create'} className={"no-decorate"}>
+            </Link> */}
+            <Link to={'/'} className={"no-decorate"}>
                 <ListItem button key={"Create"}>
                 <ListItemIcon><CreateIcon /></ListItemIcon>
                 <ListItemText primary={"Create"} />
