@@ -7,6 +7,7 @@ import SettingsPage from "./pages/SettingsPage";
 import ProfilePage from "./pages/ProfilePage";
 import LeakPage from "./pages/LeakPage";
 import HomePage from "./pages/HomePage";
+import RegisterPage from "./pages/RegisterPage";
 import { connect } from "react-redux";
 
 const styles = theme => ({
@@ -30,6 +31,7 @@ class PageContainer extends Component {
         return (
             <div className={classes.pageContainer}>
                 <Route path="/" exact render={(props) => createRoute(props)} />
+                <Route path="/register" exact render={(props) => registerRoute(props)} />
                 <Route path="/leak" exact render={(props) => leakRoute(props)} />
                 <Route path="/leak/:leakHash" exact render={(props) => leakRoute(props)} />
                 <Route path="/discover" exact render={(props) => discoverRoute(props)} />
@@ -47,6 +49,10 @@ const homeRoute = (props) => {
 
 const createRoute = (props) => {
     return <CreatePage/>
+}
+
+const registerRoute = (props) => {
+    return <RegisterPage/>
 }
 
 const leakRoute = ({match}, props) => {

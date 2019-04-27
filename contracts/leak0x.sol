@@ -9,32 +9,68 @@ contract leak0x {
     struct Leak {
         address account;
         string ipfsHash;
-        uint timestamp;
+        uint256 timestamp;
         string title;
-        uint score;
+        uint256 score;
+        string mimeType;
+    }
+    
+    struct WhistleBlower {
+        address account;
+        string pseudonym;
+        int256 reputation;
+        uint256 leakCount;
+        uint256 rank;
+        string profilePictureIpfsHash;
         string mimeType;
     }
     
     Leak[] public leaks;
-    uint public leakCount;
+    WhistleBlower[] public whistleBlowers;
+    uint256 public leakCount;
     
-    mapping (uint => address) public leakToWhistleblower;
-    mapping (string => uint) ipfsHashToLeakId;
-    mapping (address => uint[]) public whistleblowerLeakIds;
+    mapping (uint256 => address) public leakToWhistleblower;
+    mapping (string => uint256) ipfsHashToLeakId;
+    mapping (address => uint256[]) public whistleblowerLeakIds;
+    mapping (address => WhistleBlower) public addressToWhistleBlower;
+    mapping (string => address) pseudonymToWhistleBlowerAddress;
+    
+    function registerWhistleBlower(string memory _pseudonym, string memory _ipfsHash, string memory _mimeType) public isNewPseudonym(_pseudonym) {
+        require(
+            (bytes(_pseudonym).length > 0),
+            "Pseudonym required for registration but not provided"
+        );
+        require(
+            (addressToWhistleBlower[msg.sender].account != msg.sender),
+            "WhistleBlower with this address has already registered"
+        );
+        string memory profilePictureIpfsHash = "";
+        if(bytes(_ipfsHash).length > 0) {
+            profilePictureIpfsHash = _ipfsHash;
+        }
+        string memory profilePictureMimeType = "";
+        if(bytes(_mimeType).length > 0) {
+            profilePictureMimeType = _mimeType;
+        }
+        uint256 whistleBlowerCount = whistleBlowers.length;
+        whistleBlowers.push(WhistleBlower(msg.sender, _pseudonym, 0, 0, whistleBlowerCount, profilePictureIpfsHash, profilePictureMimeType));
+        addressToWhistleBlower[msg.sender] = WhistleBlower(msg.sender, _pseudonym, 0, 0, whistleBlowerCount, profilePictureIpfsHash, profilePictureMimeType);
+        pseudonymToWhistleBlowerAddress[_pseudonym] = msg.sender;
+    }
     
     function createLeak(string memory _ipfsHash, string memory _title, string memory _mimeType) public {
         require(
             (bytes(_ipfsHash).length > 0),
             "IPFS hash not provided to createLeak."
         );
-        uint id = leaks.push(Leak(msg.sender, _ipfsHash, now, _title, 0, _mimeType)) - 1;
+        uint256 id = leaks.push(Leak(msg.sender, _ipfsHash, now, _title, 0, _mimeType)) - 1;
         leakToWhistleblower[id] = msg.sender;
         whistleblowerLeakIds[msg.sender].push(id);
         ipfsHashToLeakId[_ipfsHash] = id;
         leakCount++;
     }
     
-    function getLeak(string memory _ipfsHash) public view isNewLeak(_ipfsHash) returns(address, string memory, uint, string memory, string memory, uint) {
+    function getLeak(string memory _ipfsHash) public view isNewLeak(_ipfsHash) returns(address, string memory, uint256, string memory, string memory, uint256) {
         // require(
         //     bytes(_ipfsHash).length > 0,
         //     "IPFS hash not provided to getLeak."
@@ -43,7 +79,7 @@ contract leak0x {
         //     doesLeakExist(_ipfsHash) == true,
         //     "IPFS hash does not exist as a leak"
         // );
-        uint leakId = getLeakIdFromIpfsHash(_ipfsHash);
+        uint256 leakId = getLeakIdFromIpfsHash(_ipfsHash);
         return (leaks[leakId].account,
         leaks[leakId].ipfsHash,
         leaks[leakId].timestamp,
@@ -52,7 +88,7 @@ contract leak0x {
         leaks[leakId].score);
     }
     
-    function getLeakIdFromIpfsHash(string memory _ipfsHash) private view returns(uint) {
+    function getLeakIdFromIpfsHash(string memory _ipfsHash) private view returns(uint256) {
         require(
             bytes(_ipfsHash).length > 0,
             "IPFS hash not provided to getLeakIdFromIpfsHash."
@@ -60,7 +96,7 @@ contract leak0x {
         return ipfsHashToLeakId[_ipfsHash];
     }
 
-    function getLeakFromLeakId(uint _leakId) public view returns(address, string memory, uint, string memory, string memory, uint) {
+    function getLeakFromLeakId(uint256 _leakId) public view returns(address, string memory, uint256, string memory, string memory, uint256) {
         return (leaks[_leakId].account,
             leaks[_leakId].ipfsHash,
             leaks[_leakId].timestamp,
@@ -81,7 +117,19 @@ contract leak0x {
         _;
     }
     
-    function getWhistleblowerLeakIds(address _whistleblowerID) public view returns (uint[] memory) {
+    modifier isNewPseudonym(string memory _pseudonym) {
+        require(
+            (bytes(_pseudonym).length > 0),
+            "Pseudonym has not been required, therefore it can't be verified whether or not the Pseudonym is taken"
+        );
+        require(
+            (pseudonymToWhistleBlowerAddress[_pseudonym] == 0x0000000000000000000000000000000000000000),
+            "Pseudonym is already taken"
+        );
+        _;
+    }   
+    
+    function getWhistleblowerLeakIds(address _whistleblowerID) public view returns (uint256[] memory) {
         return (whistleblowerLeakIds[_whistleblowerID]);
     }
     

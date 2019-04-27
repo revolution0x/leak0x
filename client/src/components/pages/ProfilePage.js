@@ -1,8 +1,10 @@
 import React, { Component } from "react";
 import {withStyles} from "@material-ui/core/styles";
 import Card from '@material-ui/core/Card';
-import {getWhistleblowerLeaks, getLeakFromLeakId} from "../../services/leak0x";
+import {getWhistleblowerLeaks, getLeakFromLeakId, getWhistleBlowerProfile} from "../../services/leak0x";
 import {getFromIPFS, downloadFromIPFS} from "../../utils/ipfs";
+import { Link } from "react-router-dom";
+import { Blockie } from 'rimble-ui';
 
 const styles = theme => ({
     cardPadding: {
@@ -20,12 +22,23 @@ class ProfilePage extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            leaks: []
+            leaks: [],
+            pseudonym: "",
+            profilePicture: ""
         };
     }
 
     componentDidMount() {
-        this.getWhistleblowerLeakCollection(this.props.address);
+        const {address} = this.props;
+        this.getWhistleBlowerProfile(address);
+        this.getWhistleblowerLeakCollection(address);
+    }
+
+    getWhistleBlowerProfile = async (address) => {
+        let whistleBlowerProfile = await getWhistleBlowerProfile(address);
+        let pseudonym = whistleBlowerProfile[1];
+        let profilePicture = whistleBlowerProfile[5];
+        this.setState({pseudonym, profilePicture});
     }
 
     getWhistleblowerLeakCollection = async (address) => {
@@ -50,21 +63,29 @@ class ProfilePage extends Component {
     }
 
     render() {
-        const {leaks} = this.state;
+        const {leaks, pseudonym, profilePicture} = this.state;
         const {classes, address} = this.props;
         console.log('leaks', leaks);
         return (
             <React.Fragment>
                 <div className="text-align-center">
                     <Card className={"max-page-width auto-margins " + classes.cardPadding}>
-                        <h1 className={classes.headingMargin}>{address}</h1>
+                        {(profilePicture.length === 0) &&
+                            <Blockie opts={{seed: address, size: 15, scale: 3}}></Blockie>
+                        }
+                        {(profilePicture.length > 0) &&
+                            <img src={"https://ipfs.infura.io/ipfs/" + profilePicture}/>
+                        }
+                        <h1 className={classes.headingMargin}>
+                            {(pseudonym.length > 0) && pseudonym}
+                            {(pseudonym.length === 0) && address}
+                        </h1>
                     </Card>
                     {leaks.map((leak, index) => {
-                        return <Card className={"max-page-width auto-margins " + classes.cardPadding + " " + classes.cardMargin} key={leak.hash}>
-                            <a href={"javascript:;"} rel="noopener noreferrer" onClick={() => downloadFromIPFS(leak.hash, leak.mimeType, leak.title)}>
+                        return <Card className={"max-page-width auto-margins " + classes.cardPadding + " " + classes.cardMargin} key={leak.hash + index}>
+                            <Link to={"/leak/" + leak.hash}>
                                 {leak.title}
-                            </a>
-                            <p>{leak.hash}</p>
+                            </Link>
                         </Card>
                     })}
                 </div>

@@ -10,6 +10,7 @@ import HomeIcon from '@material-ui/icons/Home';
 import CreateIcon from '@material-ui/icons/LeakAdd';
 import ViewLeakIcon from '@material-ui/icons/Visibility';
 import DiscoverIcon from '@material-ui/icons/Explore';
+import RegisterIcon from "@material-ui/icons/VerifiedUser";
 import store from '../state';
 import {connect} from 'react-redux';
 import {showLeftMenu} from '../state/actions';
@@ -62,6 +63,12 @@ class OurDrawers extends React.Component {
                 <ListItemText primary={"Home"} />
                 </ListItem>
             </Link> */}
+            <Link to={'/register'} className={"no-decorate"}>
+                <ListItem button key={"Register"}>
+                <ListItemIcon><RegisterIcon /></ListItemIcon>
+                <ListItemText primary={"Register"} />
+                </ListItem>
+            </Link>
             <Link to={'/'} className={"no-decorate"}>
                 <ListItem button key={"Create"}>
                 <ListItemIcon><CreateIcon /></ListItemIcon>

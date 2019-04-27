@@ -22,6 +22,20 @@ export const createLeak = async (account, hash, title, mimeType) => {
     return item;
 }
 
+export const registerWhistleBlower = async (account, pseudonym, profilePictureHash = "", mimeType = "") => {
+    const instance = await getInstance();
+    const item = await instance.registerWhistleBlower(pseudonym, profilePictureHash, mimeType, {
+        from: account
+    })
+    return item;
+}
+
+export const getWhistleBlowerProfile = async (address) => {
+    const instance = await getInstance();
+    const item = await instance.addressToWhistleBlower(address);
+    return item;
+}
+
 export const getWhistleblowerLeaks = async (account) => {
     const instance = await getInstance();
     const items = await instance.getWhistleblowerLeakIds(account);
