@@ -120,7 +120,7 @@ contract leak0x {
     modifier isNewPseudonym(string memory _pseudonym) {
         require(
             (bytes(_pseudonym).length > 0),
-            "Pseudonym has not been required, therefore it can't be verified whether or not the Pseudonym is taken"
+            "Pseudonym has not been provided, therefore it can't be verified whether or not the Pseudonym is taken"
         );
         require(
             (pseudonymToWhistleBlowerAddress[_pseudonym] == 0x0000000000000000000000000000000000000000),
