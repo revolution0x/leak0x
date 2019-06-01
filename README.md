@@ -1,3 +1,3 @@
 # leak0x
 
-Decentralised Whistleblowing Application For ETHCapeTown
+Decentralised Whistleblowing Application For ETHCapeTown.
